@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KurirController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\PengirimanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +37,5 @@ Route::resource('/kurir', App\Http\Controllers\KurirController::class)->middlewa
 Route::post('/kurir-update', [KurirController::class, 'update']);
 
 Route::resource('/pengiriman', App\Http\Controllers\PengirimanController::class)->middleware('auth');
+Route::post('/pengiriman-status', [PengirimanController::class, 'update']);
 Route::post('/pesanan', [PesananController::class, 'store']);

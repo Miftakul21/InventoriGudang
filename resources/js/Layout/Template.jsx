@@ -192,7 +192,7 @@ const Template = ({ children }) => {
                                 }
                             >
                                 <Link className="nav-link" href="/pengiriman">
-                                    <i class="fas fa-fw fa-truck-loading"></i>
+                                    <i className="fas fa-fw fa-truck-loading"></i>
                                     <span>Pengiriman</span>
                                 </Link>
                             </li>
@@ -319,7 +319,7 @@ const Template = ({ children }) => {
                                 }
                             >
                                 <Link className="nav-link" href="/pengiriman">
-                                    <i class="fas fa-fw fa-truck-loading"></i>
+                                    <i className="fas fa-fw fa-truck-loading"></i>
                                     <span>Pengiriman</span>
                                 </Link>
                             </li>

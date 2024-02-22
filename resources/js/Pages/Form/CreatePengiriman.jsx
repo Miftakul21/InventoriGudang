@@ -30,7 +30,6 @@ const CreatePengiriman = () => {
 
     const handleStore = (e) => {
         e.preventDefault();
-
         router.post(
             "/pengiriman",
             {
@@ -40,6 +39,7 @@ const CreatePengiriman = () => {
                 nomor_kendaraan: valuesPengiriman.nomor_kendaraan,
                 nomor_pos: valuesPengiriman.nomor_pos,
                 tanggal: valuesPengiriman.tanggal,
+                data: [...valuesBarang],
             },
             {
                 onSuccess: () => {
@@ -50,19 +50,6 @@ const CreatePengiriman = () => {
                 },
             }
         );
-
-        // router.post(
-        //     "/pesanan",
-        //     { ...valuesBarang },
-        //     {
-        //         onSuccess: () => {
-        //             console.log("berhasil cuy data pesanan");
-        //         },
-        //         onError: (error) => {
-        //             console.log(error);
-        //         },
-        //     }
-        // );
     };
 
     // Get customer name
@@ -177,11 +164,20 @@ const CreatePengiriman = () => {
                                         </label>
                                         <input
                                             type="date"
-                                            className="form-control"
+                                            className={
+                                                errors.tanggal
+                                                    ? "form-control is-invalid"
+                                                    : "form-control"
+                                            }
                                             name="tanggal"
                                             value={valuesPengiriman.tanggal}
                                             onChange={handleChangePengiriman}
                                         />
+                                        {errors.tanggal && (
+                                            <div className="invalid-feedback">
+                                                {errors.tanggal}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="form-group">
@@ -194,7 +190,11 @@ const CreatePengiriman = () => {
                                         <select
                                             name="id_customer"
                                             id="id_customer"
-                                            className="form-control"
+                                            className={
+                                                errors.id_customer
+                                                    ? "form-control is-invalid"
+                                                    : "form-control"
+                                            }
                                             defaultValue={""}
                                             onChange={handleChangePengiriman}
                                         >
@@ -208,6 +208,11 @@ const CreatePengiriman = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        {errors.id_customer && (
+                                            <div className="invalid-feedback">
+                                                {errors.id_customer}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="form-group">
@@ -255,7 +260,11 @@ const CreatePengiriman = () => {
                                         <select
                                             name="id_kurir"
                                             id="id_kurir"
-                                            className="form-control"
+                                            className={
+                                                errors.id_kurir
+                                                    ? "form-control is-invalid"
+                                                    : "form-control"
+                                            }
                                             defaultValue={""}
                                             onChange={handleChangePengiriman}
                                         >
@@ -269,6 +278,11 @@ const CreatePengiriman = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        {errors.id_kurir && (
+                                            <div className="invalid-feedback">
+                                                {errors.id_kurir}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="form-group">
@@ -288,21 +302,30 @@ const CreatePengiriman = () => {
 
                                     <div className="form-group">
                                         <label
-                                            htmlFor="nama_kurir"
+                                            htmlFor="nomor_kendaraan"
                                             className="form-label font-weight-bold"
                                         >
                                             No Kendaraan
                                         </label>
                                         <input
-                                            id="nama_kurir"
+                                            id="nomor_kendaraan"
                                             type="text"
-                                            className="form-control"
+                                            className={
+                                                errors.nomor_kendaraan
+                                                    ? "form-control is-inavlid"
+                                                    : "form-control"
+                                            }
                                             name="nomor_kendaraan"
                                             value={
                                                 valuesPengiriman.nomor_kendaraan
                                             }
                                             onChange={handleChangePengiriman}
                                         />
+                                        {errors.nomor_kendaraan && (
+                                            <div className="invalid-feedback">
+                                                {errors.nomor_kendaraan}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="form-group">
@@ -315,7 +338,11 @@ const CreatePengiriman = () => {
                                         <input
                                             id="nomor_pos"
                                             type="text"
-                                            className="form-control"
+                                            className={
+                                                errors.nomor_pos
+                                                    ? "form-control is-invalid"
+                                                    : "form-control"
+                                            }
                                             name="nomor_pos"
                                             value={valuesPengiriman.nomor_pos}
                                             onChange={handleChangePengiriman}
@@ -329,7 +356,6 @@ const CreatePengiriman = () => {
                                             className="btn btn-warning btn-sm"
                                             data-toggle="modal"
                                             data-target="#barangModal"
-                                            // onClick={handleBarang}
                                         >
                                             <i className="fas fa-plus mr-2"></i>
                                             Tambah

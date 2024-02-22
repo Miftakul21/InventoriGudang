@@ -9,7 +9,7 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Kurir;
 use App\Models\Kategori;
-
+use App\Models\Pesanan;
 
 class PengirimanController extends Controller
 {
@@ -24,12 +24,14 @@ class PengirimanController extends Controller
         $barang = Barang::all();
         $customer = Customer::all();
         $kurir = Kurir::all();
+        $pesanan = Pesanan::all();
         
         return Inertia::render('Pengiriman', [
             'pengiriman' => $pengiriman,
             'barang' => $barang,
             'customer' => $customer,
-            'kurir' => $kurir 
+            'kurir' => $kurir,
+            'pesanan' => $pesanan,
         ]);
     }
 
@@ -63,6 +65,15 @@ class PengirimanController extends Controller
      */
     public function store(Request $request)
     {
+        $array = [];
+
+        for($i = 0;  $i < count($request->all()['data']); $i++) {
+            $array[] = [
+                'id_pengiriman' => $request['data'][$i]['id_pengiriman'],
+                'kd_barang' => $request['data'][$i]['kd_barang'],
+                'jumlah' => $request['data'][$i]['jumlah'],
+            ]; 
+        }
 
         $validation = $request->validate([
             'id_pengiriman' => 'required',
@@ -70,7 +81,8 @@ class PengirimanController extends Controller
             'id_kurir' => 'required',
             'nomor_kendaraan' => 'required',
             'nomor_pos' => 'required',
-            'tanggal' => 'required'
+            'tanggal' => 'required',
+            'status' => 'kirim'
         ]);
 
         $insert = Pengiriman::create([
@@ -81,6 +93,8 @@ class PengirimanController extends Controller
             'nomor_pos' => $request->nomor_pos,
             'tanggal' => $request->tanggal
         ]);
+
+        Pesanan::insert($array);
 
         if($insert) {
             return redirect()->route('pengiriman.index')->with(['success' => 'Data berhasil simpan']);
@@ -104,9 +118,23 @@ class PengirimanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id_pengiriman)
     {
-        //
+        $barang = Barang::all();
+        $customer = Customer::all();
+        $kurir = Kurir::all();
+        $kategori = Kategori::all();
+        $pengiriman = Pengiriman::where('id_pengiriman', $id_pengiriman)->get();
+        $pesanan = Pesanan::all();
+
+        return Inertia::render('Form/StatusPengiriman', [
+            'pengiriman' => $pengiriman,
+            'kategori' => $kategori,
+            'barang' => $barang,
+            'kurir' => $kurir,
+            'customer' => $customer,
+            'pesanan' => $pesanan
+        ]);
     }
 
     /**
@@ -116,9 +144,18 @@ class PengirimanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // dd($request->all());
+
+        $update = Pengiriman::where('id_pengiriman', $request->id_pengiriman)->update([
+            'penerima' => $request->penerima,
+            'status' => 'Diterima',
+        ]);
+
+        if($update) {
+            return redirect()->route('pengiriman.index')->with(['success' => 'Data berhasil update']);
+        }
     }
 
     /**
@@ -127,8 +164,12 @@ class PengirimanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id_pengiriman)
     {
-        //
+        Pesanan::where('id_pengiriman', $id_pengiriman)->delete();
+        $delete = Pengiriman::where('id_pengiriman', $id_pengiriman)->delete();
+        if($delete) {
+            return redirect()->route('pengiriman.index')->with(['success' => 'Data berhasil simpan']);
+        }
     }
 }
